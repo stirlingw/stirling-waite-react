@@ -1,0 +1,26 @@
+{
+  "name": "stirling-waite-react",
+  "version": "1.0.0",
+  "description": "react version of stirling waite",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stirlingw/stirling-waite-react.git"
+  },
+  "author": "stirling waite",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stirlingw/stirling-waite-react/issues"
+  },
+  "homepage": "https://github.com/stirlingw/stirling-waite-react#readme",
+  "devDependencies": {
+    "webpack": "^1.12.1"
+  },
+  "dependencies": {
+    "webpack-dev-server": "^1.10.1"
+  }
+}
