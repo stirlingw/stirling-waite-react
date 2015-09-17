@@ -1,7 +1,6 @@
 import './shared/css/app.css';
 import React from 'react';
 import Hello from './component.jsx';
-//import MyModule from './modules/MyModule.js';
 
 
 main();
