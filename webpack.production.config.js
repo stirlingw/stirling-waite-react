@@ -1,23 +1,18 @@
 var path = require('path');
-//http://christianalfoni.github.io/react-webpack-cookbook/Requiring-files.html
-var path = require('path');
-var node_modules = path.resolve(__dirname, 'node_modules');
-var pathToReact = path.resolve(node_modules, 'react/dist/react.min.js');
+var webpack = require('webpack');
+var node_modules_dir = path.resolve(__dirname, 'node_modules');
 
 var config = {
-    entry: [
-        'webpack/hot/dev-server',
-        'webpack-dev-server/client?http://localhost:8080',
-        path.resolve(__dirname, 'app/main.js')
-    ],
-    resolve: {
-        alias: {
-            'react': pathToReact
-        }
+    entry: {
+        app: path.resolve(__dirname, 'app/main.js'),
+
+        // Since react is installed as a node module, node_modules/react,
+        // we can point to it directly, just like require('react');
+        vendors: ['react']
     },
     output: {
-        path: path.resolve(__dirname, 'build'),
-        filename: 'bundle.js'
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'app.js'
     },
     module: {
         loaders: [{
@@ -36,9 +31,11 @@ var config = {
             test: /\.woff$/,
             exclude: /node_modules/,
             loader: 'url?limit=100000'
-        }],
-        noParse: [pathToReact]
-    }
+        }]
+    },
+    plugins: [
+        new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js')
+    ]
 };
 
 module.exports = config;
