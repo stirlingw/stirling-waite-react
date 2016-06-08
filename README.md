@@ -7,7 +7,7 @@ Note: dev/bundle*.js etc have been committed purely to have a complete example. 
 
 ## Run in dev mode
 * `npm start`
-* Navigate to [http://localhost:8080/](http://localhost:8080/)
+* Navigate to [http://localhost:3000/](http://localhost:3000/)
 
 ## Add a new post
 * update [paths.js](https://github.com/stirlingw/stirling-waite-react/blob/master/paths.js) data
