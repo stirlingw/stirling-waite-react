@@ -1,12 +1,14 @@
 {
   "name": "stirling-waite-react",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "react version of stirling waite",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base build",
-    "deploy": "NODE_ENV=production webpack -p --config webpack.production.config.js"
+    "build-static": "node build && node publicServer",
+    "start": "webpack --progress && node server",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "npm run fixDistDebugRef",
+    "fixDistDebugRef": "mkdir -p node_modules/debug/dist && cp node_modules/debug/debug.js node_modules/debug/dist/"
   },
   "repository": {
     "type": "git",
@@ -18,25 +20,24 @@
     "url": "https://github.com/stirlingw/stirling-waite-react/issues"
   },
   "homepage": "https://github.com/stirlingw/stirling-waite-react#readme",
-  "devDependencies": {
-    "css-loader": "^0.18.0",
-    "file-loader": "^0.8.4",
-    "react": "^0.13.3",
-    "react-mixin": "^2.0.2",
-    "react-router": "^0.13.3",
-    "style-loader": "^0.12.4",
-    "url-loader": "^0.5.6",
-    "webpack": "^1.12.1"
-  },
   "dependencies": {
-    "babel": "^5.8.23",
-    "babel-core": "^5.8.24",
-    "babel-loader": "^5.3.2",
-    "css-loader": "^0.18.0",
-    "react": "^0.13.3",
-    "style-loader": "^0.12.4",
-    "url-loader": "^0.5.6",
-    "webpack": "^1.12.1",
-    "webpack-dev-server": "^1.10.1"
+    "bower-webpack-plugin": "^0.1.9",
+    "css-loader": "^0.9.1",
+    "debug": "^2.2.0",
+    "express": "^4.11.0",
+    "file-loader": "^0.8.5",
+    "jsx-loader": "^0.12.2",
+    "markdown-loader": "^0.1.2",
+    "mkdirp": "^0.5.0",
+    "moment": "^2.9.0",
+    "qs": "^6.2.0",
+    "raw-loader": "^0.5.1",
+    "react": "^0.12.2",
+    "react-hot-loader": "^1.0.4",
+    "react-router": "^0.11.6",
+    "style-loader": "^0.8.3",
+    "underscore": "^1.7.0",
+    "webpack": "^1.4.15",
+    "webpack-dev-server": "^1.7.0"
   }
 }

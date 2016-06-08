@@ -1,44 +1,88 @@
-//http://christianalfoni.github.io/react-webpack-cookbook/Requiring-files.html
-//https://github.com/iamfoxuriel/learn-reactjs
-var path = require('path');
-var node_modules = path.resolve(__dirname, 'node_modules');
-var pathToReact = path.resolve(node_modules, 'react/dist/react.min.js');
+var webpack = require('webpack');
+var BowerWebpackPlugin = require('bower-webpack-plugin');
 
-var config = {
-    entry: [
-        'webpack/hot/dev-server',
-        'webpack-dev-server/client?http://localhost:8080',
-        path.resolve(__dirname, 'app/main.js')
-    ],
-    resolve: {
-        alias: {
-            'react': pathToReact
-        }
-    },
-    output: {
-        path: path.resolve(__dirname, 'build'),
-        filename: 'bundle.js'
-    },
-    module: {
-        loaders: [{
-            test: /\.(js|jsx)$/, // A regexp to test the require path. accepts either js or jsx
-            exclude: /node_modules/,
-            loader: 'babel-loader' // The module to load. "babel" is short for "babel-loader"
-        },{
-            test: /\.css$/, // Only .css files
-            exclude: /node_modules/,
-            loader: 'style!css' // Run both loaders
-        }, {
-            test: /\.(png|jpg)$/,
-            exclude: /node_modules/,
-            loader: 'url?limit=25000'
-        }, {
-            test: /\.woff$/,
-            exclude: /node_modules/,
-            loader: 'url?limit=100000'
-        }],
-        noParse: [pathToReact]
-    }
+var outputPath = __dirname + '/dev',
+  outputPublicPath =  'http://localhost:3000/scripts/';
+
+var resolveCommon = {
+  // Allow to omit extensions when requiring these files
+  extensions: ['', '.js', '.jsx']
 };
 
-module.exports = config;
+var moduleCommon = {
+  loaders: [
+    // Pass *.css files through css-loader and style-loader transforms
+    { test: /\.css$/, loader: 'style!css' },
+    {test: /\.(woff|svg|ttf|eot)([\?]?.*)$/, loader: "file-loader?name=[name].[ext]"},
+    // Pass *.jsx files through jsx-loader transform
+    { test: /\.jsx$/, loaders: ['react-hot', 'jsx'] },
+    { test: /\.html$/, loader: 'raw' },
+    { test: /\.md$/, loader: 'raw!markdown' },
+  ]
+};
+
+module.exports = [
+  {
+    name: 'browser',
+    // Entry point for static analyzer:
+    entry: [
+      'webpack-dev-server/client?http://localhost:3000',
+      'webpack/hot/dev-server',
+      './dev/entry.jsx'
+    ],
+
+    output: {
+      // Where to put build results when doing production builds:
+      path: outputPath,
+
+      // JS filename you're going to use in HTML
+      filename: 'bundle.js',
+
+      // Path you're going to use in HTML
+      publicPath: outputPublicPath,
+    },
+
+    plugins: [
+      new webpack.HotModuleReplacementPlugin(),
+      new BowerWebpackPlugin({
+        excludes: /.*\.less/
+      }),
+      new webpack.ProvidePlugin({
+        $:      "jquery",
+        jQuery: "jquery"
+      })
+    ],
+
+    resolve: resolveCommon,
+
+    module: moduleCommon
+  },
+  {
+    name: 'server',
+
+    target: 'node',
+
+    // Entry point for static analyzer:
+    entry: {
+      bundlePage: './dev/page.jsx',
+      bundleStaticPage: './dev/staticPage.jsx'
+    },
+
+    output: {
+      // Where to put build results when doing production builds:
+      path: outputPath,
+
+      // JS filename you're going to use in HTML
+      filename: '[name].js',
+
+      // Path you're going to use in HTML
+      publicPath: outputPublicPath,
+
+      libraryTarget: "commonjs2"
+    },
+
+    resolve: resolveCommon,
+
+    module: moduleCommon
+  }
+];
